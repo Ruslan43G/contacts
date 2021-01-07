@@ -24,10 +24,8 @@ export default createStore({
     setDelItem: (state, item) => {
       state.modal.delItem = item;
     },
-    updateItem: (state, data) => {
-      const info = { ...data };
-      delete info.index;
-      state.contacts.items[data.index] = { ...data };
+    updateItem: (state, { index, ...rest }) => {
+      state.contacts.items[index] = { ...rest };
     },
   },
   actions: {

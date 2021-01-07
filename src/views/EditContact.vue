@@ -2,17 +2,39 @@
   <section class="edit">
     <h2 class="edit__title">Редактировать контакт</h2>
     <div class="edit__container" ref="container">
-      <div class="edit__item" v-for="(item, name) in contactFound" :key="item">
+      <div class="edit__confirm" :class="{ edit__confirm_opened: modal.delIsOpen}">
+          <p>Удалить поле?</p>
+          <button @click="eraseItem">Да</button>
+          <button @click="modal.delIsOpen = !modal.delIsOpen">Нет</button>
+      </div>
+      <div class="edit__cancel" :class="{ edit__cancel_opened: edited.isOpen}">
+          <p>Изменить поле?</p>
+          <button @click="closeChanges">X</button>
+          <button @click="saveChanges">V</button>
+        </div>
+      <div class="edit__item" v-for="(item, name) in contact" :key="item">
         <span>{{
           name === 'name' ? 'Имя:' :
           name === 'email' ? 'Почта:' :
           name === 'phone' ? 'Телефон:' :
           name === 'address' ? 'Адрес:' : `${name}:`
-          }}</span>
-        <p @click="edit" @input="(evt) => editHandler(evt, name)">{{item}}</p>
+          }}
+        </span>
+        <p
+          @click="(evt) => edit(evt, item)"
+          @input="(evt) => editHandler(evt, name)"
+          contenteditable>{{item}}
+        </p>
+        <button
+          v-if="name !== 'name'"
+          class="edit__del-btn"
+          @click="() => openModal(name)"
+          >&times;
+        </button>
       </div>
-      <button class="edit__button" @click="submitContact">Сохранить</button>
-      <button type="button" class="edit__add-btn" @click="createField">Добавить поле</button>
+      <button class="edit__button" @click="submitContact">Сохранить изменения</button>
+      <button type="button" class="edit__add-btn" @click="createFiled">Добавить поле</button>
+      <button @click="fallBack">откатить</button>
     </div>
   </section>
 </template>
@@ -29,6 +51,15 @@ export default {
         phone: '',
         address: '',
       },
+      modal: {
+        delIsOpen: false,
+        delItem: null,
+      },
+      edited: {
+        isOpen: false,
+      },
+      lastModified: null,
+      initialValue: null,
     };
   },
   name: 'contact',
@@ -40,29 +71,63 @@ export default {
   },
   methods: {
     ...mapActions(['updateContact']),
-    edit: (evt) => {
-      const item = evt.target;
-      item.contentEditable = true;
+    edit(evt, item) {
+      evt.target.classList.add('active');
+      this.edited.isOpen = true;
+      this.initialValue = item;
     },
     editHandler(evt, name) {
-      console.log(name);
-      this.contact[name] = evt.target.textContent;
-      console.log(this.contact[name], this.contact[name]);
+      this.edited[name] = evt.target.textContent;
+      this.lastModified = name;
+      console.log(this.lastModified);
     },
     submitContact() {
       const index = +this.$route.params.id;
       this.updateContact({
         index,
-        name: this.contact.name,
-        email: this.contact.email,
-        phone: this.contact.phone,
-        address: this.contact.address,
+        ...this.contact,
       });
       this.$router.push('/');
+    },
+    createFiled() {
+      this.contact.boo = 123;
+      console.log(this.contact);
+    },
+    eraseItem() {
+      delete this.contact[this.modal.delItem];
+      this.modal.delIsOpen = false;
+    },
+    openModal(name) {
+      console.log(this.contact[name]);
+      this.modal.delItem = name;
+      this.modal.delIsOpen = true;
+      console.log(this.modal.delItem);
+    },
+    saveChanges() {
+      if (this.lastModified === null) {
+        this.edited.isOpen = false;
+        return;
+      }
+      this.contact[this.lastModified] = this.edited[this.lastModified];
+      console.log(this.contact[this.lastModified]);
+      this.edited.isOpen = false;
+    },
+    closeChanges() {
+      const active = document.querySelector('.active');
+      active.textContent = this.initialValue;
+      active.classList.remove('active');
+      this.edited.isOpen = false;
+    },
+    fallBack() {
+      this.contact[this.lastModified] = this.initialValue;
     },
   },
   mounted() {
     this.contact = { ...this.contactFound };
+    console.log('mounted!');
+  },
+  updated() {
+    console.log('updated!');
   },
 };
 </script>
@@ -75,6 +140,25 @@ export default {
   }
   .edit__item {
     display: flex;
+  }
+  .edit__confirm {
+    display: none;
+  }
+  .edit__confirm_opened {
+    display: block;
+  }
+  .edit__cancel {
+    display: none;
+  }
+  .edit__cancel_opened {
+    display: block;
+  }
+  .edit__del-btn {
+    border: none;
+    color: red;
+    background-color: transparent;
+    align-self: flex-start;
+    cursor: pointer;
   }
   span {
     margin-right: 10px;

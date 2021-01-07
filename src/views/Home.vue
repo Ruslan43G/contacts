@@ -22,18 +22,6 @@
         v-for="item of getAllContacts"
         :key="getAllContacts.indexOf(item)"
         />
-        <!-- <li
-        class="contacts__list-item"
-        v-bind="item"
-        v-for="item of getAllContacts"
-        :key="getAllContacts.indexOf(item)"
-        >
-          <span>{{item.name}}</span>
-          <span>{{item.email}}</span>
-          <span>{{item.phone}}</span>
-          <span>{{item.address}}</span>
-          <button class="contacts__del-btn" type="button" @click="openModal(item)">&times;</button>
-        </li> -->
       </ul>
     </div>
 
