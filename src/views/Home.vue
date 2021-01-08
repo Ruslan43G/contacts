@@ -3,24 +3,27 @@
     <form class="add-form" @submit.prevent="submitContact">
       <h3 class="add-form__form-title">Добавить контакт</h3>
       <label class="add-form__label" for="name">Имя</label>
-      <input type="text" id="name" v-model="name" class="add-form__input" placeholder="Введите имя">
+      <input
+        type="text" id="name"
+        v-model="contact.name" class="add-form__input" placeholder="Введите имя" required>
       <label class="add-form__label" for="email">Почта</label>
       <input type="email" id="email"
-      v-model="email" class="add-form__input" placeholder="Введите email">
+        v-model="contact.email" class="add-form__input" placeholder="Введите email">
       <label class="add-form__label" for="phone">Телефон</label>
-      <input type="number" id="phone"
-      v-model="phone" class="add-form__input" placeholder="Введите телефон">
+      <input type="tel" id="phone"
+        v-model="contact.phone" class="add-form__input" placeholder="Введите номер телефона">
       <label class="add-form__label" for="adress">Адрес</label>
       <input type="text" id="adress"
-      v-model="address" class="add-form__input" placeholder="Введите адрес">
+        v-model="contact.address" class="add-form__input" placeholder="Введите адрес">
       <button class="add-form__submit" type="submit">Добавить</button>
     </form>
     <div class="contacts">
       <h3 class="contacts__title" @click="getAllContacts">Список контактов</h3>
       <ul class="contacts__list">
-        <Contact v-bind:contact="item"
-        v-for="item of getAllContacts"
-        :key="getAllContacts.indexOf(item)"
+        <Contact
+          v-bind:contact="item"
+          v-for="(item, index) of getAllContacts"
+          :key="index"
         />
       </ul>
     </div>
@@ -36,6 +39,9 @@ export default {
   name: 'Home',
   data() {
     return {
+      contact: {
+
+      },
       name: '',
       email: '',
       phone: '',
@@ -51,9 +57,7 @@ export default {
   methods: {
     ...mapActions(['createContact']),
     submitContact() {
-      this.createContact({
-        name: this.name, email: this.email, phone: this.phone, address: this.address,
-      });
+      this.createContact({ ...this.contact });
     },
   },
 };
@@ -80,10 +84,19 @@ export default {
   }
   .add-form__input {
     margin: 0 0 25px 0;
-    border-radius: 10px;
-    border: 1px solid blue;
+    border-radius: 5px;
+    border: none;
+    border-bottom: 1px solid blue;
     padding: 10px;
+    outline: none;
   }
+  .add-form__input:focus {
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+  }
+  .add-form__input:invalid {
+    border-bottom: 1px solid red;
+  }
+
   .add-form__submit {
     width: 50%;
     align-self: center;
@@ -110,6 +123,11 @@ export default {
     list-style-type: none;
     padding: 0;
     counter-reset: list;
+    margin: 0 auto;
+  }
+  .contacts__list-item {
+    margin-left: auto;
+    margin-right: auto;
   }
   .contacts__list-item:last-of-type {
     margin-bottom: 0;

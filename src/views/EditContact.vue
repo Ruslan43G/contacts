@@ -1,7 +1,27 @@
 <template>
   <section class="edit">
     <h2 class="edit__title">Редактировать контакт</h2>
-    <div class="edit__container" ref="container">
+    <div class="edit__container">
+      <form v-if="newField.visible" class="edit__form" @submit.prevent="createFiled">
+        <h3 class="edit__form-title">Добавить поле</h3>
+        <div>
+          <select v-model="newField.key" class="edit__form-select">
+            <option value="" disabled selected>Выберите опцию</option>
+            <template v-for="(item, index) in availibleOptions" :key="index">
+              <option
+                v-if="!Object.keys(contact).includes(item)"
+                :value="item"
+                >
+                {{
+                  nameCheck(item)
+                }}
+              </option>
+            </template>
+          </select>
+          <input v-model="newField.value" type="text" class="edit__form-input" required>
+        </div>
+        <button type="submit" class="edit__form-submit">Добавить</button>
+      </form>
       <div class="edit__confirm" :class="{ edit__confirm_opened: modal.delIsOpen}">
           <p>Удалить поле?</p>
           <button @click="eraseItem">Да</button>
@@ -14,11 +34,8 @@
         </div>
       <div class="edit__item" v-for="(item, name) in contact" :key="item">
         <span>{{
-          name === 'name' ? 'Имя:' :
-          name === 'email' ? 'Почта:' :
-          name === 'phone' ? 'Телефон:' :
-          name === 'address' ? 'Адрес:' : `${name}:`
-          }}
+          nameCheck(name)
+          }}:
         </span>
         <p
           @click="(evt) => edit(evt, item)"
@@ -33,8 +50,13 @@
         </button>
       </div>
       <button class="edit__button" @click="submitContact">Сохранить изменения</button>
-      <button type="button" class="edit__add-btn" @click="createFiled">Добавить поле</button>
-      <button @click="fallBack">откатить</button>
+      <button
+        type="button"
+        class="edit__add-btn"
+        @click="newField.visible = true"
+      >Добавить поле
+      </button>
+      <button v-if="lastModified && !edited.isOpen" @click="fallBack">откатить</button>
     </div>
   </section>
 </template>
@@ -47,9 +69,6 @@ export default {
     return {
       contact: {
         name: '',
-        email: '',
-        phone: '',
-        address: '',
       },
       modal: {
         delIsOpen: false,
@@ -58,8 +77,14 @@ export default {
       edited: {
         isOpen: false,
       },
+      newField: {
+        visible: false,
+        key: '',
+        value: null,
+      },
       lastModified: null,
       initialValue: null,
+      availibleOptions: ['phone', 'email', 'address', 'work', 'birthday', 'surname'],
     };
   },
   name: 'contact',
@@ -71,6 +96,30 @@ export default {
   },
   methods: {
     ...mapActions(['updateContact']),
+    nameCheck(value) {
+      if (value === 'name') {
+        return 'Имя';
+      }
+      if (value === 'email') {
+        return 'Почта';
+      }
+      if (value === 'phone') {
+        return 'Телефон';
+      }
+      if (value === 'address') {
+        return 'Адрес';
+      }
+      if (value === 'birthday') {
+        return 'День рождения';
+      }
+      if (value === 'surname') {
+        return 'Фамилия';
+      }
+      if (value === 'work') {
+        return 'Место работы';
+      }
+      return value;
+    },
     edit(evt, item) {
       evt.target.classList.add('active');
       this.edited.isOpen = true;
@@ -90,8 +139,11 @@ export default {
       this.$router.push('/');
     },
     createFiled() {
-      this.contact.boo = 123;
+      this.contact[this.newField.key] = this.newField.value;
       console.log(this.contact);
+      this.newField.key = '';
+      this.newField.value = null;
+      this.newField.visible = false;
     },
     eraseItem() {
       delete this.contact[this.modal.delItem];
@@ -116,15 +168,18 @@ export default {
       const active = document.querySelector('.active');
       active.textContent = this.initialValue;
       active.classList.remove('active');
+      this.lastModified = null;
+      this.initialValue = null;
       this.edited.isOpen = false;
     },
     fallBack() {
       this.contact[this.lastModified] = this.initialValue;
+      this.lastModified = null;
+      this.initialValue = null;
     },
   },
   mounted() {
     this.contact = { ...this.contactFound };
-    console.log('mounted!');
   },
   updated() {
     console.log('updated!');
