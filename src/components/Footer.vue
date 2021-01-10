@@ -1,7 +1,9 @@
 <template>
   <footer class="footer">
-    <Logo />
-    <small class="footer__copy">2021 Ruslan Tikhomirov</small>
+    <div class="footer__container">
+      <Logo />
+      <small class="footer__copy">2021 Ruslan Tikhomirov</small>
+    </div>
   </footer>
 </template>
 
@@ -17,14 +19,19 @@ export default {
 
 <style scoped>
   .footer {
+    box-sizing: border-box;
     padding: 10px;
     background-color: blue;
     min-height: 50px;
+  }
+  .footer__container {
+    margin: 0 auto;
+    max-width: 1440px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
   .footer__copy {
-    color:rgba(rgb(250, 246, 246), rgb(253, 253, 253), rgb(244, 244, 248), .8);
+    color: grey;
   }
 </style>

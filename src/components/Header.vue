@@ -1,12 +1,13 @@
 <template>
   <header class="header">
-    <Logo />
-    <nav class="header__nav">
-      <ul class="header__nav-list">
-        <li class="header__nav-item" @click="$router.push('/')">Главная</li>
-        <li class="header__nav-item">Ссылка</li>
-      </ul>
-    </nav>
+    <div class="header__container">
+      <Logo />
+      <nav class="header__nav">
+        <ul class="header__nav-list">
+          <li class="header__nav-item" @click="$router.push('/')">Главная</li>
+        </ul>
+      </nav>
+    </div>
   </header>
 </template>
 
@@ -24,14 +25,19 @@ export default {
   .header {
     background-color: blue;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 10px;
     box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
   }
+  .header__container {
+    margin: 0 auto;
+    max-width: 1440px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .header__nav-list {
     color: white;
+    padding: 0;
     list-style-type: none;
     display: flex;
     justify-content: space-between;

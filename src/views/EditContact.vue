@@ -18,21 +18,34 @@
               </option>
             </template>
           </select>
-          <input v-model="newField.value" type="text" class="edit__form-input" required>
+          <input
+            v-model="newField.value"
+            type="text"
+            class="edit__form-input"
+            placeholder="Введите значение"
+            required>
         </div>
-        <button type="submit" class="edit__form-submit">Добавить</button>
+        <button type="submit" class="edit__form-submit edit__button">Добавить</button>
       </form>
       <div class="edit__confirm" :class="{ edit__confirm_opened: modal.delIsOpen}">
           <p>Удалить поле?</p>
-          <button @click="eraseItem">Да</button>
-          <button @click="modal.delIsOpen = !modal.delIsOpen">Нет</button>
+          <button
+            class="edit__button edit__confirm-yes"
+            @click="eraseItem">
+            Да
+          </button>
+          <button class="edit__button edit__confirm-no"
+            @click="modal.delIsOpen = !modal.delIsOpen">
+            Нет
+          </button>
       </div>
       <div class="edit__cancel" :class="{ edit__cancel_opened: edited.isOpen}">
           <p>Изменить поле?</p>
           <button @click="closeChanges">X</button>
           <button @click="saveChanges">V</button>
         </div>
-      <div class="edit__item" v-for="(item, name) in contact" :key="item">
+      <div class="edit__item"
+      :class="{edit__item_first: name === 'name'}" v-for="(item, name) in contact" :key="item">
         <span>{{
           nameCheck(name)
           }}:
@@ -49,14 +62,23 @@
           >&times;
         </button>
       </div>
-      <button class="edit__button" @click="submitContact">Сохранить изменения</button>
       <button
         type="button"
-        class="edit__add-btn"
+        class="edit__button edit__add-btn"
         @click="newField.visible = true"
       >Добавить поле
       </button>
-      <button v-if="lastModified && !edited.isOpen" @click="fallBack">откатить</button>
+      <button
+        class="edit__button edit__save-btn"
+        @click="submitContact">
+        Сохранить изменения
+      </button>
+      <button
+        class="edit__button"
+        v-if="lastModified && !edited.isOpen"
+        @click="fallBack">
+        откатить
+      </button>
     </div>
   </section>
 </template>
@@ -140,7 +162,6 @@ export default {
     },
     createFiled() {
       this.contact[this.newField.key] = this.newField.value;
-      console.log(this.contact);
       this.newField.key = '';
       this.newField.value = null;
       this.newField.visible = false;
@@ -190,17 +211,85 @@ export default {
 <style scoped>
   .edit__container {
     max-width: 40%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
     text-align: left;
   }
+  .edit__button {
+    width: 50%;
+    min-width: 150px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+    outline: none;
+  }
+  .edit__form {
+    margin-bottom: 30px;
+  }
+  .edit__form-select {
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  .edit__form-input {
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 25px;
+  }
+  .edit__form-submit {
+    background-color: green;
+    margin-top: 10px;
+  }
   .edit__item {
+    padding-right: 25px;
     display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+    max-width: 100%;
+    position: relative;
+  }
+  .edit__item_first {
+    padding: 0;
+  }
+  .edit__button:hover {
+    opacity: 0.8;
+    transition: all 0.3s linear;
+  }
+  .edit__button:active {
+    transform: scale(1.1);
+    transition: all 0.3s linear;
+  }
+  .edit__add-btn {
+    margin: 30px auto 15px;
+    background-color: blue;
   }
   .edit__confirm {
     display: none;
+    margin-bottom: 30px;
   }
   .edit__confirm_opened {
     display: block;
+  }
+  .edit__confirm-yes {
+    background-color: green;
+    max-width: 25px;
+    margin-right: 10px;
+  }
+  .edit__confirm-no {
+    background-color: red;
+    max-width: 25px;
   }
   .edit__cancel {
     display: none;
@@ -214,6 +303,13 @@ export default {
     background-color: transparent;
     align-self: flex-start;
     cursor: pointer;
+    position: absolute;
+    bottom: 16px;
+    right: 0;
+    outline: none;
+  }
+  .edit__save-btn {
+    background-color: green;
   }
   span {
     margin-right: 10px;
@@ -225,5 +321,20 @@ export default {
   p:hover::after {
     content: 'Редактировать';
     margin-left: 20px;
+  }
+  @media screen and (max-width: 1032px){
+    .edit__form-input {
+      margin: 10px 0;
+    }
+  }
+  @media screen and (max-width: 774px){
+    .edit__confirm-no {
+      margin-top: 10px;
+    }
+  }
+  @media screen and (max-width: 320px){
+    .edit__container {
+      padding: 0 10px;
+    }
   }
 </style>

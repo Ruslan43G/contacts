@@ -3,8 +3,10 @@
     class="contacts__list-item"
     >
       <span>{{contact.name}}</span>
-      <button @click="openPage" class="contact__open">Посмотреть контакт</button>
-      <button class="contacts__del-btn" type="button" @click="openModal(contact)">&times;</button>
+      <button @click="openPage" class="contact__btn contact__open-btn">Открыть</button>
+      <button
+        class="contact__btn contacts__del-btn"
+        type="button" @click="openModal(contact)">&times;</button>
   </li>
 </template>
 
@@ -40,16 +42,28 @@ export default {
     padding: 0 0 5px 20px;
     box-sizing: border-box;
   }
-  .contact__open {
-    cursor: pointer;
+  .contact__open-btn {
     margin: 0 20px 0 auto;
+    background-color: transparent;
+  }
+  .contact__btn:hover {
+    opacity: 0.8;
+    transition: all 0.2s linear;
+  }
+  .contact__btn:active {
+    transform: scale(1.1);
+    transition: all 0.2s linear;
+  }
+  .contact__btn {
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    outline: none;
   }
   .contacts__del-btn {
     width: 24px;
-    border-radius: 5px;
-    border: none;
     background-color: #e53935;
     color: white;
-    cursor: pointer;
   }
 </style>

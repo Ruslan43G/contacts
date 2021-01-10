@@ -1,6 +1,8 @@
 <template>
   <Header />
-  <router-view/>
+  <main class="content">
+    <router-view/>
+  </main>
   <Footer />
   <ConfirmModal />
 </template>
@@ -26,12 +28,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
-
+.content {
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: calc(100vh - 140px);
+}
 #nav {
   padding: 30px;
 }
