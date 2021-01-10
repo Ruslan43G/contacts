@@ -91,7 +91,7 @@ export default {
     margin: 0 0 25px 0;
     border-radius: 5px;
     border: none;
-    border-bottom: 1px solid blue;
+    border-bottom: 1px solid lightblue;
     padding: 10px;
     outline: none;
   }
@@ -99,15 +99,14 @@ export default {
     box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
   }
   .form__input:invalid {
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid salmon;
   }
-
   .form__submit {
     width: 50%;
     align-self: center;
     border-radius: 5px;
     border: none;
-    background-color: green;
+    background-color: lightblue;
     height: 40px;
     color: white;
     cursor: pointer;
@@ -165,7 +164,7 @@ export default {
     border-radius: 10px;
     border: none;
     outline: none;
-    background-color: blue;
+    background-color: lightblue;
     color: white;
     transition: all 0.2s linear;
   }

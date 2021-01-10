@@ -32,7 +32,7 @@ export default {
 .content {
   margin: 0 auto;
   max-width: 1440px;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 122px);
 }
 #nav {
   padding: 30px;

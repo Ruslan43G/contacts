@@ -21,7 +21,7 @@ export default {
   .footer {
     box-sizing: border-box;
     padding: 10px;
-    background-color: blue;
+    background-color: lightblue;
     min-height: 50px;
   }
   .footer__container {

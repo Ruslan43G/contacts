@@ -41,16 +41,20 @@
       </div>
       <div class="edit__cancel" :class="{ edit__cancel_opened: edited.isOpen}">
           <p>Изменить поле?</p>
-          <button @click="closeChanges">X</button>
-          <button @click="saveChanges">V</button>
+          <button class="edit__button edit__confirm-yes" @click="saveChanges">Да</button>
+          <button class="edit__button edit__confirm-no" @click="closeChanges">Нет</button>
         </div>
       <div class="edit__item"
-      :class="{edit__item_first: name === 'name'}" v-for="(item, name) in contact" :key="item">
-        <span>{{
+        :class="{edit__item_first: name === 'name'}"
+        v-for="(item, name) in contact"
+        :key="item"
+        >
+        <span class="edit__name">{{
           nameCheck(name)
           }}:
         </span>
         <p
+          class="edit__value"
           @click="(evt) => edit(evt, item)"
           @input="(evt) => editHandler(evt, name)"
           contenteditable>{{item}}
@@ -74,10 +78,10 @@
         Сохранить изменения
       </button>
       <button
-        class="edit__button"
+        class="edit__button edit__fallback"
         v-if="lastModified && !edited.isOpen"
         @click="fallBack">
-        откатить
+        Отменить
       </button>
     </div>
   </section>
@@ -171,10 +175,8 @@ export default {
       this.modal.delIsOpen = false;
     },
     openModal(name) {
-      console.log(this.contact[name]);
       this.modal.delItem = name;
       this.modal.delIsOpen = true;
-      console.log(this.modal.delItem);
     },
     saveChanges() {
       if (this.lastModified === null) {
@@ -202,13 +204,13 @@ export default {
   mounted() {
     this.contact = { ...this.contactFound };
   },
-  updated() {
-    console.log('updated!');
-  },
 };
 </script>
 
-<style scoped>
+<style>
+  .edit__title {
+    margin-bottom: 30px;
+  }
   .edit__container {
     max-width: 40%;
     min-width: 300px;
@@ -238,30 +240,38 @@ export default {
     outline: none;
     cursor: pointer;
     border-radius: 10px;
+    border: 1px solid lightblue;
+    color: lightblue;
   }
   .edit__form-input {
     padding: 10px;
     box-sizing: border-box;
     outline: none;
     border-radius: 10px;
-    border: 1px solid black;
+    border: 1px solid lightblue;
     margin-left: 25px;
   }
+  .edit__form-input::placeholder {
+    color: lightblue;
+  }
   .edit__form-submit {
-    background-color: green;
+    background-color: lightseagreen;
     margin-top: 10px;
   }
   .edit__item {
     padding-right: 25px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid lightblue;
     margin-bottom: 10px;
     max-width: 100%;
     position: relative;
   }
   .edit__item_first {
     padding: 0;
+  }
+  .edit__value {
+
   }
   .edit__button:hover {
     opacity: 0.8;
@@ -273,7 +283,7 @@ export default {
   }
   .edit__add-btn {
     margin: 30px auto 15px;
-    background-color: blue;
+    background-color: lightblue;
   }
   .edit__confirm {
     display: none;
@@ -283,16 +293,17 @@ export default {
     display: block;
   }
   .edit__confirm-yes {
-    background-color: green;
+    background-color: lightseagreen;
     max-width: 25px;
     margin-right: 10px;
   }
   .edit__confirm-no {
-    background-color: red;
+    background-color:salmon;
     max-width: 25px;
   }
   .edit__cancel {
     display: none;
+    margin-bottom: 25px;
   }
   .edit__cancel_opened {
     display: block;
@@ -309,18 +320,19 @@ export default {
     outline: none;
   }
   .edit__save-btn {
-    background-color: green;
+    background-color: lightseagreen;
   }
-  span {
+  .edit__name {
     margin-right: 10px;
   }
-  p {
+  .edit__value {
     margin-top: 0;
-    cursor: pointer;
+    position: relative;
   }
-  p:hover::after {
-    content: 'Редактировать';
-    margin-left: 20px;
+  .edit__fallback {
+    margin-top: 15px;
+    background-color: yellow;
+    color: black;
   }
   @media screen and (max-width: 1032px){
     .edit__form-input {

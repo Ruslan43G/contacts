@@ -23,10 +23,9 @@ export default {
 
 <style scoped>
   .header {
-    background-color: blue;
+    background-color: lightblue;
     box-sizing: border-box;
     padding: 10px;
-    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
   }
   .header__container {
     margin: 0 auto;
@@ -41,7 +40,6 @@ export default {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
-    width: 150px;
   }
   .header__nav-item {
     cursor: pointer;

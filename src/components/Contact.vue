@@ -36,7 +36,7 @@ export default {
     width: 50%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid blue;
+    border-bottom: 1px solid lightblue;
     margin: 0 0 15px 0;
     position: relative;
     padding: 0 0 5px 20px;
@@ -63,7 +63,7 @@ export default {
   }
   .contacts__del-btn {
     width: 24px;
-    background-color: #e53935;
+    background-color: salmon;
     color: white;
   }
 </style>

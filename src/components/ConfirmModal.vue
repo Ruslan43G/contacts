@@ -75,11 +75,26 @@ export default {
   }
   .popup__submit {
     width: 50%;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
     cursor: pointer;
+    transition: all 0.3s linear;
+    outline: none;
+    background-color: lightblue;
   }
   .popup__decline {
     width: 50%;
     margin: 10px 0 0 0;
     cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+    outline: none;
+    background-color: salmon;
   }
 </style>
